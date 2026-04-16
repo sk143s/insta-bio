@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 4: Mystery Number 🤫</title>
+    <style>
+        /* Base Reset */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        
+        body { 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7); 
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .puzzle-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 35px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 380px;
+            z-index: 10;
+        }
+
+        h2 { color: #ff6f91; margin-bottom: 10px; font-size: 26px; }
+        p { color: #666; margin-bottom: 20px; font-size: 16px; }
+
+        input { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            border: 2px solid #ffccd5; 
+            border-radius: 15px; 
+            font-size: 24px; 
+            text-align: center; 
+            outline: none;
+            color: #ff6f91;
+            background: #fffafa;
+            -webkit-appearance: none;
+        }
+
+        button { 
+            background: #ff6f91; 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%;
+            font-size: 18px;
+            box-shadow: 0 5px 15px rgba(255,111,145,0.3);
+        }
+
+        #feedback { 
+            margin-top: 20px; 
+            font-weight: 900; 
+            font-size: 20px;
+            min-height: 30px;
+        }
+
+        /* --- WINNING PANEL STYLES --- */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+        }
+
+        .win-panel {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 30px;
+            text-align: center;
+            width: 85%;
+            max-width: 320px;
+            transform: scale(0.7);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .win-panel.show {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .win-icon { font-size: 60px; margin-bottom: 15px; display: block; }
+        
+        .next-btn {
+            background: #6edb8f; /* Green for success */
+            color: white;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(110, 219, 143, 0.4);
+        }
+
+        .hint-text { font-size: 11px; color: #bbb; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <div class="puzzle-card">
+        <h2>Find the Number🕵️‍♀️</h2>
+        <p>Complete the task to go to the next page.</p>
+        <p>Guess the secret number between <b> <br/>1 and 100</b>.</p>
+        
+        <input type="number" id="guessInput" placeholder="??" pattern="\d*" inputmode="numeric">
+        <button onclick="checkGuess()">Verify Guess ➜</button>
+        
+        <div id="feedback"></div>
+        <p class="hint-text">The number changes every time you play!</p>
+    </div>
+
+    <div class="overlay" id="winOverlay">
+        <div class="win-panel" id="winPanel">
+            <span class="win-icon">🎉</span>
+            <h2 style="color: #4CAF50;">Excellent!</h2>
+            <p id="winMessage" style="margin-top: 10px;"></p>
+            <button class="next-btn" onclick="goToNextPage()">Continue ➜</button>
+        </div>
+    </div>
+
+    <script>
+        const secretNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        const feedbackColors = ["#ff4d4d", "#4d94ff", "#ff9f43", "#a29bfe", "#00cec9", "#e84393"];
+
+        function checkGuess() {
+            const input = document.getElementById('guessInput');
+            const feedback = document.getElementById('feedback');
+            const val = parseInt(input.value);
+
+            if (isNaN(val)) {
+                feedback.innerText = "Enter a number! 🙄";
+                feedback.style.color = "#ff6f91";
+                return;
+            }
+
+            attempts++;
+            const randomColor = feedbackColors[Math.floor(Math.random() * feedbackColors.length)];
+
+            if (val === secretNumber) {
+                showWinPanel();
+            } else if (val > secretNumber) {
+                feedback.innerText = "Too high! 📈 Try lower.";
+                feedback.style.color = randomColor;
+                input.value = ""; 
+                input.focus();
+            } else {
+                feedback.innerText = "Too low! 📉 Try higher.";
+                feedback.style.color = randomColor;
+                input.value = "";
+                input.focus();
+            }
+        }
+
+        function showWinPanel() {
+            const overlay = document.getElementById('winOverlay');
+            const panel = document.getElementById('winPanel');
+            const winMsg = document.getElementById('winMessage');
+
+            winMsg.innerHTML = `You found the number <b>${secretNumber}</b> in ${attempts} tries! You're ready for the Next page.`;
+            
+            overlay.style.display = 'flex';
+            setTimeout(() => {
+                panel.classList.add('show');
+            }, 10);
+        }
+
+        function goToNextPage() {
+            // Change 'story.html' to whatever your next page is!
+            const nextLink = "story.html?v=" + Date.now();
+            window.location.replace(nextLink);
+        }
+
+        // Heart Sparkle Effect
+        document.addEventListener('click', (e) => {
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💖';
+                heart.style.position = 'fixed';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '9999';
+                heart.style.transition = 'all 1s ease-out';
+                
+                document.body.appendChild(heart);
+
+                const destinationX = (Math.random() - 0.5) * 200;
+                const destinationY = (Math.random() - 0.5) * 200;
+
+                requestAnimationFrame(() => {
+                    heart.style.transform = `translate(${destinationX}px, ${destinationY}px) rotate(${Math.random() * 360}deg)`;
+                    heart.style.opacity = '0';
+                });
+
+                setTimeout(() => heart.remove(), 1000);
+            }
+        });
+    </script>
+</body>
+</html>

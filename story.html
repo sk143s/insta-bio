@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Deep Life Story... 📖</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7); 
+            padding: 20px;
+        }
+        .story-container {
+            background: white;
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            max-width: 550px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { color: #ff6f91; margin-bottom: 20px; font-size: 24px; font-weight: 800; }
+        
+        #story-box {
+            text-align: left;
+            font-size: 17px;
+            line-height: 1.8;
+            color: #444;
+            min-height: 300px;
+            margin-bottom: 25px;
+            border-left: 4px solid #ffccd5;
+            padding-left: 15px;
+        }
+
+        .highlight { color: #ff3f6c; font-weight: bold; }
+
+        button {
+            background: #ff6f91;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: none; /* Hidden until story ends */
+            margin: 0 auto;
+        }
+        button:hover { background: #ff3f6c; transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+    <div class="story-container">
+        <h1>An "Inspirational" Story... 📜</h1>
+        
+        <div id="story-box"></div>
+
+        <button id="nextBtn" onclick="window.location.href='message.html'">Finish wasting your time ➜</button>
+    </div>
+
+    <script>
+        const storyLines = [
+            "Once upon a time… 📖",
+            "Oru oorla oru paiyan irundhaan. Romba decent-ana paiyan.",
+            "Avan life-ah perusa build pannanum nu daily master plan poduvaan. 📝",
+            "Every Sunday night, mirror munnadi ninnu, 'Nalaiku Monday! Puthiya manithan-aga pirapene!' nu sathiyam pannuvaan. 🔥",
+            "Morning 5 manikku alarm set pannuvaan. Motivation overload-la thunguvaan.",
+            "Sharp ah 5 AM... Alarm adikkum. ⏰",
+            "Avan eyes open pannuvaan. Mind-la, 'If you sleep now, you will dream. If you wake up, you will achieve!' nu quote odum.",
+            "But body, <span class='highlight'>'Oru 5 minutes mattum snooze podu da chellam'</span> nu sollum.",
+            "Andha 5 minutes… adhu dhaan history-laye <span class='highlight'>biggest lie</span>. 😌",
+            "Mella kanna thirandhu paatha... Time 10:30 AM! ☀️",
+            "Avan shock aayiduvaan. 'Indha naalum waste-u. Nalaiku pakalam' nu thirumba thunguvan.",
+            "Afternoon friend call pannuvaan. 'Bro, Elon Musk-lam indha vayasula enna pannaaru theriyuma?' nu deep talk panguvaan. 🧠",
+            "Evening tea kudichitu sky paathu, 'Naan different da... enna yaarum purinjukala' nu self-motivation panni oru reels poduvaan. ☕",
+            "Night vandhuduchu... Thirumba paduthu phone scroll panna aarambikkuraan.",
+            "Random-a indha story link-ah paathaan. 📱",
+            "Mudhal la serious-a read panna start pannaan. 'Maybe idhu moolama en life change aagum' nu nambinaan.",
+            "Line by line read pannaan… Paragraph by paragraph read pannaan… Climax varaikum wait pannaan… 🧐",
+            "Aana climax vara varaikum… <span class='highlight'>Onnum nadakkala!</span> 😌",
+            "Hero achieve pannala. Heroine varala. Villain defeat aagala. Moral kooda illa.",
+            "Just oru paiyan… oru phone… oru mokka story.",
+            "Ippo nee idha read panitu iruka… Twist varum nu nambi 'Next' line pathutu iruka...",
+            "But twist enna na…",
+            "Intha useless story read panni unga precious time-ah waste pannitingale! 😂🔥",
+            "Idhu dhaan life! Ippo click the button below and go to the final roast."
+        ];
+
+        let lineIndex = 0;
+        const storyBox = document.getElementById("story-box");
+        const nextBtn = document.getElementById("nextBtn");
+
+        function typeLine() {
+            if (lineIndex < storyLines.length) {
+                let p = document.createElement("p");
+                p.innerHTML = storyLines[lineIndex];
+                storyBox.appendChild(p);
+                
+                // Auto-scroll to bottom
+                storyBox.scrollTop = storyBox.scrollHeight;
+                
+                lineIndex++;
+                setTimeout(typeLine, 1200); // Speed of story appearing
+            } else {
+                nextBtn.style.display = "block";
+            }
+        }
+
+        // Start typing on load
+        window.onload = typeLine;
+
+        // HEART SPARKLE
+       document.addEventListener('click', (e) => {
+            for (let i = 0; i < 8; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💖';
+                heart.style.position = 'fixed';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '9999';
+                heart.style.transition = 'all 1s ease-out';
+                document.body.appendChild(heart);
+                const dx = (Math.random() - 0.5) * 200;
+                const dy = (Math.random() - 0.5) * 200;
+                requestAnimationFrame(() => {
+                    heart.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random() * 360}deg)`;
+                    heart.style.opacity = '0';
+                });
+                setTimeout(() => heart.remove(), 1000);
+            }
+        });
+    </script>
+</body>
+</html>

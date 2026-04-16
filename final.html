@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For You 💖</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { 
+            height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: linear-gradient(135deg, #ffdde1, #ee9ca7); 
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .final-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 450px;
+            position: relative;
+        }
+
+        /* The Gift Box Animation */
+        .gift-box {
+            font-size: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        .gift-box:hover { transform: scale(1.1) rotate(5deg); }
+
+        .hidden-content {
+            display: none;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 { color: #ff6f91; font-size: 28px; margin-bottom: 15px; }
+        p { color: #555; line-height: 1.6; font-size: 18px; }
+
+        .photo-frame {
+            width: 150px;
+            height: 150px;
+            background: #eee;
+            margin: 20px auto;
+            border: 5px solid white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+
+        .replay-btn {
+            margin-top: 25px;
+            background: #ff6f91;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="final-container">
+        <div id="giftSection">
+            <h1>You've reached the end! 🌟</h1>
+            <p>You played so well! I have a small gift for you.</p>
+            <div class="gift-box" onclick="revealGift()">🎁</div>
+            <p style="font-size: 14px; color: #888;">(Click the gift to open)</p>
+        </div>
+
+        <div class="hidden-content" id="revealSection">
+            <h1>Surprise! 💖</h1>
+            <div class="photo-frame">
+                <img src="https://cdn-icons-png.flaticon.com/512/4359/4359642.png" alt="Happy Emoji">
+            </div>
+           <p>
+                    Congratulations! You just spent quite a chunk of your day solving 
+                    puzzles and spinning wheels and reading story just to read my Instagram bio.
+                    <br>
+                    Honestly? I’m impressed by your dedication. Since you’re still here... 
+                    I think I like you! 
+                    <br><br>
+                    <b>You're officially a VIP in my books!</b> 🌸
+                </p>
+            
+            <a href="https://share.google/VkBbTW0ZSH9s5PKTY" class="replay-btn">Next Page</a>
+        </div>
+    </div>
+
+    <canvas id="confetti" style="position:fixed; top:0; left:0; pointer-events:none; z-index:100;"></canvas>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script>
+        function revealGift() {
+            document.getElementById('giftSection').style.display = 'none';
+            document.getElementById('revealSection').style.display = 'block';
+            
+            // Launch Confetti!
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#ff6f91', '#ffdde1', '#ffffff']
+              });
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ff6f91', '#ffdde1', '#ffffff']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        }
+
+        // --- GLOBAL HEART SPARKLE ---
+        document.addEventListener('click', (e) => {
+            for (let i = 0; i < 8; i++) {
+                const h = document.createElement('div');
+                h.innerHTML = '💖';
+                h.style.position = 'fixed';
+                h.style.left = e.clientX + 'px';
+                h.style.top = e.clientY + 'px';
+                h.style.fontSize = Math.random() * 20 + 10 + 'px';
+                h.style.pointerEvents = 'none';
+                h.style.transition = 'all 1s ease-out';
+                document.body.appendChild(h);
+                const dx = (Math.random() - 0.5) * 200;
+                const dy = (Math.random() - 0.5) * 200;
+                requestAnimationFrame(() => {
+                    h.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random() * 360}deg)`;
+                    h.style.opacity = '0';
+                });
+                setTimeout(() => h.remove(), 1000);
+            }
+        });
+    </script>
+</body>
+</html>

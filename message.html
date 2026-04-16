@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Message For Me 💖</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { height: 100vh; display: flex; justify-content: center; align-items: center; background: linear-gradient(135deg, #ffdde1, #ee9ca7); overflow: hidden; }
+        .container { background: rgba(255, 255, 255, 0.9); padding: 40px; width: 90%; max-width: 400px; border-radius: 30px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 4px solid #fff; transition: all 0.5s ease; }
+        
+        h1 { color: #ff6f91; margin-bottom: 15px; font-size: 32px; text-shadow: 2px 2px 4px rgba(0,0,0,0.05); }
+        p { margin-bottom: 20px; font-size: 18px; color: #666; }
+        
+        
+        textarea { width: 100%; height: 120px; padding: 15px; border-radius: 15px; border: 2px solid #ffccd5; font-size: 18px; margin-bottom: 20px; outline: none; transition: 0.3s; resize: none; color: #444; }
+        textarea:focus { border-color: #ff6f91; box-shadow: 0 0 10px rgba(255, 111, 145, 0.2); }
+        
+        button { width: 100%; padding: 15px; border-radius: 15px; border: none; background: #ff6f91; color: white; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; box-shadow: 0 5px 15px rgba(255, 111, 145, 0.3); }
+        button:hover { background: #ff3f6c; transform: translateY(-2px); }
+        
+        /* Smooth fade in for the success panel */
+        .fade-in { animation: fadeIn 0.8s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+    <div class="container" id="box">
+        
+
+        <div id="formView">
+            <img src="sight.png" width="130px" alt="Image">
+            <p id="subtitle">Is there anything you want to tell me? Type below 💕</p>
+            <textarea id="userMessage" placeholder="Type your sweet message here..." autocomplete="off"></textarea>
+            <button id="sendBtn" onclick="sendMessage()">Send Message 💌</button>
+        </div>
+
+        <div id="successView" style="display: none;" class="fade-in">
+            <img src="flower.png" width="170px" alt="Image">
+            <h1>Thank You! ✨</h1>
+            <p>Your message has been safely delivered to Me...! 💖</p>
+            <button onclick="goToNext()">Next ✨</button>
+        </div>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const msg = document.getElementById("userMessage").value.trim();
+            
+            // Validation: Check if the text area is empty
+            if (msg === "") {
+                document.getElementById("userMessage").placeholder = "Please write something first! 💕";
+                // Add a little shake effect or highlight if you want, but changing placeholder is clean
+                return; 
+            }
+
+            // Hide the form view and show the success view
+            document.getElementById("formView").style.display = "none";
+            document.getElementById("successView").style.display = "block";
+        }
+
+        function goToNext() {
+            // Change 'nextpage.html' to the actual name of your final/next file
+            const nextLink = "final.html?v=" + Date.now();
+            window.location.replace(nextLink);
+        }
+
+        // Heart Click Effect
+        document.addEventListener('click', (e) => {
+            // Don't spawn hearts if clicking on inputs or buttons
+            if(e.target.tagName === 'TEXTAREA' || e.target.tagName === 'BUTTON') return; 
+
+            for (let i = 0; i < 6; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💖';
+                heart.style.position = 'fixed';
+                heart.style.left = e.clientX + 'px';
+                heart.style.top = e.clientY + 'px';
+                heart.style.fontSize = '20px';
+                heart.style.pointerEvents = 'none';
+                heart.style.zIndex = '9999';
+                heart.style.transition = 'all 1s ease-out';
+                document.body.appendChild(heart);
+                
+                const dx = (Math.random() - 0.5) * 200;
+                const dy = (Math.random() - 0.5) * 200;
+                
+                requestAnimationFrame(() => {
+                    heart.style.transform = `translate(${dx}px, ${dy}px) rotate(${Math.random() * 360}deg)`;
+                    heart.style.opacity = '0';
+                });
+                setTimeout(() => heart.remove(), 1000);
+            }
+        });
+        
+        // Forces reload if navigated back to
+        window.addEventListener("pageshow", function (event) {
+            if (event.persisted) window.location.reload();
+        });
+    </script>
+</body>
+</html>
