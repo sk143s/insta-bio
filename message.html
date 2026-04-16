@@ -44,20 +44,37 @@
     </div>
 
     <script>
-        function sendMessage() {
-            const msg = document.getElementById("userMessage").value.trim();
-            
-            // Validation: Check if the text area is empty
-            if (msg === "") {
-                document.getElementById("userMessage").placeholder = "Please write something first! 💕";
-                // Add a little shake effect or highlight if you want, but changing placeholder is clean
-                return; 
-            }
+        async function sendMessage() {
+    const msg = document.getElementById("userMessage").value.trim();
 
-            // Hide the form view and show the success view
-            document.getElementById("formView").style.display = "none";
-            document.getElementById("successView").style.display = "block";
-        }
+    if (msg === "") {
+        document.getElementById("userMessage").placeholder = "Please write something first! 💕";
+        return; 
+    }
+
+    // ✅ get name
+    const name = localStorage.getItem("username") || "Unknown";
+
+    try {
+        // ✅ CALL YOUR RENDER BACKEND
+        await fetch("https://my-insta-bio.onrender.com/send", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                name: name,
+                message: msg
+            })
+        });
+    } catch (err) {
+        console.log("Error:", err);
+    }
+
+    // UI
+    document.getElementById("formView").style.display = "none";
+    document.getElementById("successView").style.display = "block";
+}
 
         function goToNext() {
             // Change 'nextpage.html' to the actual name of your final/next file
